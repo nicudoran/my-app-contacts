@@ -9,7 +9,7 @@ export default class ListContactComponent extends Component {
     super(props);
     this.state = {
       contacts: [],
-      res:false
+      res:false,
     };
     this.service=new ContactService();
     this.handleSearchClick = this.handleSearchClick.bind(this);
@@ -82,7 +82,7 @@ handleSearchChange(event) {
     try{
       const response=await this.service.getContactByName(name);
       if(response){
-        console.log(response.data.contacts);
+        console.log(response);
         this.setState({contacts:response.data.contacts});
         }
     }
@@ -112,13 +112,14 @@ handleSearchChange(event) {
         >Search</button>
       </form>
         </div>
-      <ul className="list-group">
-        {this.state.contacts.map((contact,index)=>(
+      <ul  className="list-group">
+        {this.state.contacts&&this.state.contacts.map((contact,index)=>(
         <li className="list-group-item mx-2" key={index}>{contact.firstName} {contact.lastName}: {contact.phoneNumber}
         <button className="btn btn-warning float-end" onClick={event => this.handleDelete(event, contact.id)} >Delete contact</button>
         </li>
       ))}
       </ul>
+      <div className='h4'>{!this.state.contacts&&<p>No contacts with name: "{this.state.searchValue}" was found!</p>}</div>
       </>
     )
   }
